@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>비밀 채팅앱-김수신</title>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+    <script src="./ceocamp.js"></script>
+
+    <style>
+      #container {
+        border:1px solid black;
+        width:100%;
+      }
+
+      #header {
+        border:1px solid black;
+        text-align: center;
+        width:100%;
+      }
+
+      #chatlist {
+        height:500px;
+        width:100%;
+        overflow: scroll;
+      }
+
+      #bottom {
+        border:1px solid black;
+        height:20px;
+      }
+
+      #btn {
+        float:right;
+        width:14%;
+        color:white;
+        background-color: black;
+      }
+
+      #message {
+        float:left;
+        width:84%;
+      }
+
+    </style>
+
+    <script>
+
+    $(document).ready(()=>{
+
+      $("#chatList").hide();
+
+      $("#join").on("click",()=>{
+        let id = $("#idvalue").val();
+        let pwd = $("#pwdvalue").val();
+        database.ref("members/"+id).set(pwd);
+      })
+
+      $("#login").on("click",()=>{
+        let id = $("#idvalue").val();
+        let pwd = $("#pwdvalue").val();
+        database.ref("members/"+id).on("value",(snapshot)=>{
+          if(snapshot.val()){
+            if(pwd==snapshot.val()){
+              alert("로그인 되었습니다.");
+              $("#chatList").show();
+            }else{
+              alert("패스워드가 일치하지 않습니다.");
+            }
+          }else{
+            alert("가입되지 않은 회원입니다.");
+          }
+        });
+
+      })
+    })
+
+      $(document).ready(()=>{
+
+        loadMsgs();
+
+        $("#btn").on("click",()=>{
+          sendMsg();
+        });
+
+        $("#message").keydown((key)=>{
+          if(key.keyCode == 13){ sendMsg() };
+        })
+
+      });
+
+    </script>
+
+  </head>
+  <body>
+    <input type="text" id="idvalue" placeholder="아이디">
+    <input type="text" id="pwdvalue" placeholder="패스워드">
+
+    <button id="join">회원가입</button>
+    <button id="login">로그인</button>
+    <div id="chatList">
+      <div id="container">
+          <div id="header">
+              비밀 채팅-김수신
+          </div>
+          <div id="chatlist">
+          </div>
+          <div id="bottom">
+              <input id="message" type="text" name="message" placeholder="내용입력">
+              <div id="btn">보내기</div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
