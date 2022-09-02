@@ -44,12 +44,12 @@ exports.login = functions.https.onRequest((request, response) => {
     db.ref("members/"+id).on("value",(snapshot)=>{
       if(snapshot.val()){
         if(snapshot.val() == pwd){
-          response.send({"result_code":1, "result:":"로그인 되었습니다."})
+          response.send({"result_code":1, "result":"로그인 되었습니다."})
         }else{
-          response.send({"result_code":2, "result:":"비밀번호가 일치하지 않습니다."})
+          response.send({"result_code":2, "result":"비밀번호가 일치하지 않습니다."})
         }
       }else{
-        response.send({"result_code":3, "result:":"가입되지 않은 회원입니다."})
+        response.send({"result_code":3, "result":"가입되지 않은 회원입니다."})
       }
     });
   });

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+
+    <title>Welcome to Firebase Hosting</title>
+
+    <script>
+
+      $(document).ready(()=>{
+
+        function joinCall(){
+
+          let idvalue = $("#idvalue").val();
+          let pwdvalue = $("#pwdvalue").val();
+
+          $.ajax({
+              url: "https://us-central1-test-database5845.cloudfunctions.net/join",
+              type: "POST",
+              data: {id:idvalue, pwd:pwdvalue},
+              dataType: "json"
+          })
+          .done(function(json) {
+
+          });
+        }
+
+        function loginCall(){
+          let idvalue = $("#idvalue").val();
+          let pwdvalue = $("#pwdvalue").val();
+
+          $.ajax({
+              url: "https://us-central1-test-database5845.cloudfunctions.net/login",
+              type: "POST",
+              data: {id:idvalue, pwd:pwdvalue},
+              dataType: "json"
+          })
+          .done(function(json) {
+            if(json["result_code"]==1){
+              loadMsgs();
+            }else if(json["result_code"]==2){
+              alert(json["result"]);
+            }else if(json["result_code"]==3){
+              alert(json["result"]);
+            }
+          });
+        }
+
+        $("#join").on("click",()=>{
+          joinCall();
+        })
+
+        $("#login").on("click",()=>{
+          loginCall();
+        })
+
+        function sendSMS(phone,text) {
+          var url = '';
+          if(text.length < 30) {
+            url = "https://www.monja123.com/Remote/RemoteSms.html";
+          }else{
+            url = "https://www.monja123.com/Remote/RemoteMms.html";
+          }
+          data = {
+              remote_id: "receive5845",
+              remote_pass: "k9!XJGt2UJi2uVn",
+              remote_num: 1,
+              remote_phone: phone,
+              remote_callback: "010584546413",
+              remote_msg: text,
+          };
+          $.post(url, data, function(obj) {});
+        }
+
+      })
+
+
+    </script>
+
+  </head>
+  <!-- <body> -->
+  	<body class="is-preload">
+      <input type="text" id="idvalue" placeholder="아이디">
+      <input type="password" id="pwdvalue" placeholder="패스워드">
+
+      <button id="join">회원가입</button> <br><br><br>
+      <button id="login">로그인</button>
+
+      <div id="chatList">
+        채팅 내용
+      </div>
+
+    <!-- Sidebar -->
+      <section id="sidebar">
+        <div class="inner">
+          <nav>
+            <ul>
+              <li><a href="#intro">Welcome</a></li>
+              <li><a href="#one">Who we are</a></li>
+              <li><a href="#two">What we do</a></li>
+              <li><a href="#three">Get in touch</a></li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+  </body>
+</html>
